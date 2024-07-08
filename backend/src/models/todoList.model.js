@@ -3,9 +3,13 @@ import {mongoose, Schema}from "mongoose";
 const todoListSchema = new Schema(
     {
         title:{
-            required:true,
             type:String,
-        },
+           required:true
+         },
+         description:{
+             type:String,
+             default:""
+         },
         todo:[
             {
                 type: mongoose.Schema.Types.ObjectId,
