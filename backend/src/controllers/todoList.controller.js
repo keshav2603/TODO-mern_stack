@@ -1,7 +1,6 @@
 import { AsyncHandler } from "../utils/AsyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { Todo } from "../models/todo.model.js";
 import {Todolist} from "../models/todoList.model.js";
 import { User } from "../models/user.model.js";
 
@@ -44,7 +43,7 @@ const updateTodoList = AsyncHandler( async(req, res)=>{
     if(description.trim()===""){
         throw new ApiError(400, "new description is required to update");
     }
-    const todoListId = req.params.id;
+    const todoListId = req.params._id;
     if(!todoListId){
         throw new ApiError(400, "todolist id is required");
     }
@@ -65,13 +64,46 @@ const updateTodoList = AsyncHandler( async(req, res)=>{
 
 })
 
+const deleteTodoList = AsyncHandler(async (req, res) => {
+    const todoListId = req.params._id;
 
+    if (!todoListId) {
+        throw new ApiError(400, "Todo list ID is required to delete it");
+    }
 
+    // TODO: Before deleting, check if there are any todos in the list. If there are, delete them too.
+    const deletedTodoList = await Todolist.findByIdAndDelete(todoListId);
 
+    if (!deletedTodoList) {
+        throw new ApiError(500, "Error while deleting the todo list");
+    }
+
+    res.status(200).json(new ApiResponse(200, {}, "Todo list deleted successfully"));
+});
+
+const getTodoList = AsyncHandler(async (req, res) => {
+    const todoListId = req.params._id; // Correct variable name
+    
+    if (!todoListId) { // Ensure consistent variable reference
+        throw new ApiError(400, "Todo list ID is required to get it"); // Error message
+    }
+
+    const todoList = await Todolist.findById(todoListId);
+
+    if (!todoList) {
+        throw new ApiError(404, "Todo list does not exist"); // Consistent capitalization
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, todoList, "Todo list fetched successfully")); // Consistent capitalization
+});
 
 export {
     createTodoList,
     updateTodoList,
+    deleteTodoList,
+    getTodoList
     
 }
 
