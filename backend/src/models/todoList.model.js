@@ -10,7 +10,7 @@ const todoListSchema = new Schema(
              type:String,
              default:""
          },
-        todo:[
+        todos:[
             {
                 type: mongoose.Schema.Types.ObjectId,
                 ref:"Todo"

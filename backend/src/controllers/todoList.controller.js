@@ -31,7 +31,7 @@ const createTodoList = AsyncHandler( async(req, res) =>{
         await user.save();
 
     return res.status(200)
-    .json( new ApiResponse(200, createdTodoList, "todolist created successfully"))
+    .json( new ApiResponse(200, todoList, "todolist created successfully"))
 });
 
 const updateTodoList = AsyncHandler( async(req, res)=>{
@@ -70,8 +70,20 @@ const deleteTodoList = AsyncHandler(async (req, res) => {
     if (!todoListId) {
         throw new ApiError(400, "Todo list ID is required to delete it");
     }
+    const todoList = await Todolist.findById(todoListId);
 
-    // TODO: Before deleting, check if there are any todos in the list. If there are, delete them too.
+    if (!todoList) {
+        throw new ApiError(404, "Todo list not found");
+    }
+       // Check if there are any todos in the list
+       if (todoList.todos && todoList.todos.length > 0) {
+        // If there are todos, delete each todo before deleting the todo list
+        await Promise.all(todoList.todos.map(async (todoId) => {
+            await Todo.findByIdAndDelete(todoId);
+        }));
+    }
+
+    
     const deletedTodoList = await Todolist.findByIdAndDelete(todoListId);
 
     if (!deletedTodoList) {
@@ -103,7 +115,6 @@ export {
     createTodoList,
     updateTodoList,
     deleteTodoList,
-    getTodoList
-    
+    getTodoList  
 }
 

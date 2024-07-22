@@ -13,7 +13,12 @@ const todoSchema = new Schema(
         completed:{
             type:Boolean,
             default:false,
+        },
+        todoList_Id:{
+            type:String,
+            required:true
         }
+
     },
     {
         timestamps:true
