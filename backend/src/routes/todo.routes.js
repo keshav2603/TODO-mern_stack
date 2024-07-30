@@ -16,7 +16,8 @@ import {
     registerUser,
     loginUser,
     logoutUser,
-    refreshAccessToken
+    refreshAccessToken,
+    getCurrentUser
 } from "../controllers/user.controller.js"
 import { verifyJWT } from "../middleware/auth.middleware.js";
 
@@ -50,6 +51,9 @@ router.route("/login")
     .post(loginUser);
 
 router.route("/logout")
+    .post(verifyJWT, logoutUser);
+
+router.route("/get-user")
     .post(verifyJWT, logoutUser);
 
 // Refresh Token Route
