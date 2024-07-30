@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import LoginPage from './pages/LoginPage.jsx';
-import StarterPage from './pages/Starter.page.jsx';
+
+import { Outlet } from 'react-router-dom'
+
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <h1 className='bg-green-500'>hello world</h1>
-      <StarterPage/>
-      <LoginPage/>
-    
+      <div>
+        <main>
+          <Outlet/>
+        </main>
+      </div>
     </>
   )
 }

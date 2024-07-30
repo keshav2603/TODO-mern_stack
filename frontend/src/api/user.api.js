@@ -1,8 +1,8 @@
 import api from "./api.js";
 
-export const registerUser = async (userData) => {
+export const registerUser = async ({ name, email, password }) => {
     try {
-      const response = await api.post('/register', userData);
+      const response = await api.post('/register', { name, email, password });
       return response.data;
     } catch (error) {
       console.error('Error registering user', error);
@@ -19,6 +19,15 @@ export const registerUser = async (userData) => {
       throw error;
     }
   };
+
+  export const getUser = async ()=>{
+    try{
+      const response = await api.get('/get-user');
+      return response.data;
+    }catch ( error ){
+      console.log("error while getting the user :" , error);
+    }
+  }
 
   
   export const logoutUser = async (token) => {

@@ -1,6 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { registerUser } from '../api/user.api';
 
 export default function LoginPage() {
+  // State for form input values
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  // Initialize navigate hook
+  const navigate = useNavigate();
+
   useEffect(() => {
     const para = document.createElement('div');
     para.className = 'flex flex-wrap gap-0.5 h-screen items-center justify-center relative';
@@ -12,33 +22,80 @@ export default function LoginPage() {
     document.getElementById('myDIV').appendChild(para);
   }, []);
 
+  // Function to handle form submission
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    try {
+      const response = await registerUser({ name, email, password });
+      // Check if login was successful
+      if (response.status === 200) { // Adjust based on your API's success response
+        // Redirect to the /home page
+        navigate('/home');
+      } else {
+        // Handle error (e.g., show an error message to the user)
+        console.error('Registration error:', response.data.message);
+      }
+    } catch (error) {
+      // Handle errors (e.g., show an error message to the user)
+      console.error('Registration error:', error);
+    }
+  };
+
   return (
     <div className="bg-black before:animate-pulse before:bg-gradient-to-b before:from-gray-900 overflow-hidden before:via-[#00FF00] before:to-gray-900 before:absolute h-screen">
       <div id="myDIV">
         <div className="w-[100vw] h-[100vh] px-3 sm:px-5 flex items-center justify-center absolute">
           <div className="w-full sm:w-1/2 lg:2/3 px-6 bg-gray-500 bg-opacity-20 bg-clip-padding backdrop-filter backdrop-blur-sm text-white z-50 py-4 rounded-lg">
             <div className="w-full flex justify-center text-[#00FF00] text-xl mb:2 md:mb-5">
-              Sign In
+              Log In
             </div>
-            <div className="mb-6">
-              <label htmlFor="email" className="block mb-2 text-xs font-medium text-white">your Name:</label>
-              <input type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name" required />
-            </div>
-            <div className="mb-6">
-              <label htmlFor="email" className="block mb-2 text-xs font-medium text-white">Your email</label>
-              <input type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@gmail.com" required />
-            </div>
-            <div className="mb-6">
-              <label htmlFor="password" className="block mb-2 text-xs font-medium text-white">Your password</label>
-              <input type="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-            </div>
-            <div className="flex flex-row justify-between">
-              <div className="text-white text-sm md:text-md">Forgot Password</div>
-              <div className="text-[#00FF00] text-sm md:text-md">Signup</div>
-            </div>
-            <div className="mt-4 md:mt-10 w-full flex justify-center text-sm md:text-xl bg-[#00FF00] py-2 rounded-md">
-              Login
-            </div>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-6">
+                <label htmlFor="name" className="block mb-2 text-xs font-medium text-white">Your Name:</label>
+                <input
+                  type="text"
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Your name"
+                  required
+                />
+              </div>
+              <div className="mb-6">
+                <label htmlFor="email" className="block mb-2 text-xs font-medium text-white">Your email:</label>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="name@gmail.com"
+                  required
+                />
+              </div>
+              <div className="mb-6">
+                <label htmlFor="password" className="block mb-2 text-xs font-medium text-white">Your password:</label>
+                <input
+                  type="password"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required
+                />
+              </div>
+              <div className="flex flex-row justify-between">
+                <div className="text-white text-sm md:text-md">Forgot Password</div>
+                <div className="text-[#00FF00] text-sm md:text-md">
+                  <Link to="/signup">Sign up</Link>
+                </div>
+              </div>
+              <button type="submit" className="mt-4 md:mt-10 w-full flex justify-center text-sm md:text-xl bg-[#00FF00] py-2 rounded-md">
+                Login
+              </button>
+            </form>
           </div>
         </div>
       </div>

@@ -54,7 +54,7 @@ router.route("/logout")
     .post(verifyJWT, logoutUser);
 
 router.route("/get-user")
-    .post(verifyJWT, logoutUser);
+    .get(verifyJWT, logoutUser);
 
 // Refresh Token Route
 router.route("/refresh-token")
