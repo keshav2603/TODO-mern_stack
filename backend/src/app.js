@@ -5,11 +5,7 @@ import cors from "cors";
 
 const app = express();
 
-app.use(cors({
-    origin: 'http://localhost:5173', // Replace with your actual frontend URL
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(cors());
 
 app.use(express.json({ limit: "16kb" }));
 app.use(express.static("public"));
