@@ -26,22 +26,22 @@ const router = Router();
 
 // Todo Routes
 router.route("/todo/:todolist_id")
-    .post(createTodo);
+    .post(verifyJWT, createTodo);
 
 router.route("/todo/:_id")
-    .put(updateTodo)
-    .patch(updateTodoCompletion)
-    .get(getTodo)
-    .delete(deleteTodo);
+    .put(verifyJWT, updateTodo)
+    .patch(verifyJWT, updateTodoCompletion)
+    .get(verifyJWT, getTodo)
+    .delete(verifyJWT, deleteTodo);
 
 // TodoList Routes
 router.route("/todolist")
     .post(verifyJWT, createTodoList);
 
 router.route("/todolist/:_id")
-    .put(updateTodoList)
-    .delete(deleteTodoList)
-    .get(getTodoList);
+    .put(verifyJWT, updateTodoList)
+    .delete(verifyJWT, deleteTodoList)
+    .get(verifyJWT, getTodoList);
 
 // User Routes
 router.route("/register")
@@ -58,7 +58,7 @@ router.route("/get-user")
 
 // Refresh Token Route
 router.route("/refresh-token")
-    .post(refreshAccessToken);
+    .post(verifyJWT, refreshAccessToken);
 
 
 export default router;
