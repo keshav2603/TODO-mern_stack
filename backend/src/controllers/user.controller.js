@@ -55,6 +55,10 @@ const registerUser = AsyncHandler( async(req,res)=>{
     if(!createdUser){
         throw new ApiError(500, "something went wrong while regestering a user");
     }
+    const options = {
+        httpOnly:true,
+        secure:true,
+    }
     const {accessToken, refreshToken} = await generateAccessAndRefreshTokens(user._id)
     return res.status(201)
     .cookie("accessToken", accessToken, options)
