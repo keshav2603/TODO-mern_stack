@@ -2,7 +2,7 @@ import api from "./api.js";
 
 export const registerUser = async ({ name, email, password }) => {
     try {
-      const response = await api.post('/api/v1/todo/register', { name, email, password });
+      const response = await api.post('/todo/register', { name, email, password });
       return response.data;
     } catch (error) {
       console.error('Error registering user', error);
