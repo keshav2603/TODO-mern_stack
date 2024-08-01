@@ -4,7 +4,7 @@ import { registerUser } from '../api/user.api';
 
 export default function LoginPage() {
   // State for form input values
-  const [name, setName] = useState('');
+  const [username, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -27,9 +27,9 @@ export default function LoginPage() {
     event.preventDefault(); // Prevent the default form submission behavior
 
     try {
-      const response = await registerUser({ name, email, password });
+      const response = await registerUser({ username, email, password });
       // Check if login was successful
-      if (response.status === 200) { // Adjust based on your API's success response
+      if (response.status === 200||201) { // Adjust based on your API's success response
         // Redirect to the /home page
         navigate('/home');
       } else {
@@ -38,7 +38,7 @@ export default function LoginPage() {
       }
     } catch (error) {
       // Handle errors (e.g., show an error message to the user)
-      console.error('Registration error:', error);
+      console.error('Registration error:', error.message);
     }
   };
 
@@ -56,7 +56,7 @@ export default function LoginPage() {
                 <input
                   type="text"
                   id="name"
-                  value={name}
+                  value={username}
                   onChange={(e) => setName(e.target.value)}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Your name"

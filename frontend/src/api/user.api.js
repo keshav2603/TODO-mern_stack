@@ -1,8 +1,8 @@
 import api from "./api.js";
 
-export const registerUser = async ({ name, email, password }) => {
+export const registerUser = async ({username, email, password }) => {
     try {
-      const response = await api.post('/todo/register', { name, email, password });
+      const response = await api.post('/todo/register', { username, email, password });
       return response.data;
     } catch (error) {
       console.error('Error registering user', error);
@@ -10,9 +10,9 @@ export const registerUser = async ({ name, email, password }) => {
     }
   };
 
-  export const loginUser = async (userData) => {
+  export const loginUser = async ({password, email}) => {
     try {
-      const response = await api.post('/login', userData);
+      const response = await api.post('/todo/login', {password, email});
       return response.data;
     } catch (error) {
       console.error('Error logging in user', error);
@@ -32,7 +32,7 @@ export const registerUser = async ({ name, email, password }) => {
   
   export const logoutUser = async (token) => {
     try {
-      const response = await api.post('/logout', null, {
+      const response = await api.post('/todo/logout', null, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
