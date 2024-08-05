@@ -22,7 +22,7 @@ export const registerUser = async ({username, email, password }) => {
 
   export const getUser = async ()=>{
     try{
-      const response = await api.get('/get-user');
+      const response = await api.get('/todo/get-user');
       return response.data;
     }catch ( error ){
       console.log("error while getting the user :" , error);
